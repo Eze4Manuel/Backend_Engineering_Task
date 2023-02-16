@@ -47,9 +47,21 @@ exports.getProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getAllProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    const page = parseInt((_a = req.query) === null || _a === void 0 ? void 0 : _a.page) || 1;
+    const limit = parseInt((_b = req.query) === null || _b === void 0 ? void 0 : _b.limit) || 10;
     try {
-        const products = yield Product_1.default.find();
-        res.json(products);
+        const products = yield Product_1.default.find()
+            .skip((page - 1) * limit)
+            .limit(limit);
+        const totalProducts = yield Product_1.default.countDocuments();
+        const totalPages = Math.ceil(totalProducts / limit);
+        res.json({
+            currentPage: page,
+            totalPages: totalPages,
+            totalProducts: totalProducts,
+            products: products,
+        });
     }
     catch (err) {
         console.error(err.message);

@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
+mongoose.set('strictQuery', true);
+
+require("dotenv").config();
 
 export const connectDB = async () => {
     try {
-        mongoose.connect('mongodb://mongodb:27017/mainstack_db');
+        mongoose.connect(`${process.env.PROD_MONGODB_URI}`);
         console.log('MongoDB Connected');
     } catch (err: any) {
         console.error(err.message);

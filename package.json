@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "scripts": {
     "start": "nodemon dist/index.js",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon src/index.ts",
+    "postinstall": "tsc",
+    "build": "tsc -p .",
+    "deploy": "git add . && git commit --amend --no-edit Heroku && git push heroku master"
   },
   "keywords": [],
   "author": "Ezenagu Emmanuel S",

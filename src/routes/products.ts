@@ -3,7 +3,6 @@ const { createNewProducts, getProduct, getAllProducts, updateProduct, deleteProd
 const { validateNewProduct, validateUpdateProduct } = require('../middleware/validateProducts');
 const router = Router();
 
-
 // Create a new product
 router.post('/', validateNewProduct, createNewProducts);
 

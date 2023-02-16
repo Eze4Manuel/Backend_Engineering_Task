@@ -37,16 +37,28 @@ exports.getProduct = async (req: Request, res: Response) => {
     }
 }
 
+exports.getAllProducts = async (req: Request<any, any, any, any>, res: Response) => {
+    const page = parseInt(req.query?.page) || 1;
+    const limit = parseInt(req.query?.limit) || 10;
 
-exports.getAllProducts = async (req: Request, res: Response) => {
     try {
-        const products = await Product.find();
-        res.json(products);
+        const products = await Product.find()
+            .skip((page - 1) * limit)
+            .limit(limit);
+        const totalProducts = await Product.countDocuments();
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        res.json({
+            currentPage: page,
+            totalPages: totalPages,
+            totalProducts: totalProducts,
+            products: products,
+        });
     } catch (err: any) {
         console.error(err.message);
         res.status(500).send('Server Error');
     }
-}
+};
 
 
 
